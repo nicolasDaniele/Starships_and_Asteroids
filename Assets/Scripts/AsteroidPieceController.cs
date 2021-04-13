@@ -11,12 +11,16 @@ public class AsteroidPieceController : MonoBehaviour
 
     Rigidbody2D rb2d;
     SpriteRenderer sprt;
+    BoxCollider2D boxCol;
+    ParticleSystem explosion;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         sprt = GetComponent<SpriteRenderer>();
+        explosion = GetComponentInChildren<ParticleSystem>();
+        boxCol = GetComponent<BoxCollider2D>();
         float randForceX = Random.Range(-force, force);
         float randForceY = Random.Range(-force, force);
         float randTorque = Random.Range(-torque, torque);
@@ -43,8 +47,16 @@ public class AsteroidPieceController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             GameController.score += 50;
-            Destroy(gameObject);
             Destroy(collision.gameObject);
+            sprt.enabled = false;
+            boxCol.enabled = false;
+            explosion.Play();
+            Invoke("SelfDestroy", 1f);
         }
+    }
+
+    void SelfDestroy()
+    {
+        Destroy(gameObject);
     }
 }

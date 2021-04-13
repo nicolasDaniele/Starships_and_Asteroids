@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem explosionParticle;
     public GameController game;
     public GameObject boss;
+    public GameObject bossCannon;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // If collides with enemy, asteroid or background, dies
+        // If ship collides with enemy, asteroid or background, dies
         if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Asteroid")
             || collision.gameObject.CompareTag("Background"))
         {
@@ -81,14 +82,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("CamMov"))
         {
             GameController.moveCamera = !GameController.moveCamera;
-            if (GameController.moveCamera)
-            {
-                Debug.Log("Can move camera");
-            }
-            else
-            {
-                Debug.Log("Can't move camera");
-            }
             Destroy(collision.gameObject);
         }
 
@@ -102,13 +95,13 @@ public class PlayerController : MonoBehaviour
         {
             game.state = GameController.GameStates.BOSSFIGHT;
             boss.GetComponent<BossController>().StartMovePatern();
+            bossCannon.GetComponent<BossCannonController>().StartRotationPatern();
             Destroy(collision.gameObject);
         }
     }
 
     void Die()
     {
-        camAnim.enabled = true;
         camAnim.SetTrigger("Shake");
         GetComponent<BoxCollider2D>().enabled = false;
         anim.SetTrigger("Die");
@@ -118,7 +111,6 @@ public class PlayerController : MonoBehaviour
         rb2d.AddForce(new Vector2(randXForce, randYForce), ForceMode2D.Impulse);
         rb2d.AddTorque(randTorque);
         game.state = GameController.GameStates.END;
-        Debug.Log("Dead!");
     }
 
     void Explode()

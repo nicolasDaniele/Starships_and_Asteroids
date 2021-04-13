@@ -41,13 +41,12 @@ public class BossController : MonoBehaviour
             Destroy(collision.gameObject);
             GetComponent<SpriteRenderer>();
             life--;
-            Debug.Log(life);
         }
     }
 
     private void Die()
     {
-        Debug.Log("Boss destroyed");
+        GameController.score += 1000;
         sRend.enabled = false;
         Destroy(GameObject.Find("Boss1Cannon"));
         partSys1.Play();
