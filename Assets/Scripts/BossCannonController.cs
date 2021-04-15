@@ -10,13 +10,16 @@ public class BossCannonController : MonoBehaviour
     public float shootForce = 7f;
     public GameObject bullet;
     public GameController game;
+    public AudioClip[] shotClips = new AudioClip[4];
 
     Animator anim;
+    AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
         anim.enabled = false;
     }
 
@@ -25,7 +28,6 @@ public class BossCannonController : MonoBehaviour
         if (game.state == GameController.GameStates.BOSSFIGHT)
         {
             anim.enabled = true;
-            //anim.SetTrigger("Shoot");
         }
     }
 
@@ -36,6 +38,10 @@ public class BossCannonController : MonoBehaviour
     }
     void Shoot()
     {
+        // Randomize sfx clip
+        int randClip = Random.Range(0, 4);
+        source.clip = shotClips[randClip];
+        source.Play();
         // Spawns bullet
         Instantiate(bullet, transform.position +
                           new Vector3(-2f, 0.05f, 0),

@@ -8,8 +8,11 @@ public class EnemyBeeController : MonoBehaviour
     public float xLimit = -10f;
     public float attackDistance = 10f;
     public float attackSpeed = 7f;
+    public AudioClip[] dieClips = new AudioClip[2];
+
     ParticleSystem explosion;
     GameObject ship;
+    AudioSource dieAudio;
     bool attackMode = false;
 
 
@@ -18,6 +21,7 @@ public class EnemyBeeController : MonoBehaviour
     void Start()
     {
         ship = GameObject.Find("Ship");
+        dieAudio = GetComponent<AudioSource>();
         explosion = GetComponentInChildren<ParticleSystem>();
     }
 
@@ -52,17 +56,16 @@ public class EnemyBeeController : MonoBehaviour
         // When shot, it dies
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            // Randomize sfx clip
+            int randClip = Random.Range(0, 2);
+            dieAudio.clip = dieClips[randClip];
+            dieAudio.Play();
             Destroy(collision.gameObject);
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             explosion.Play();
             GameController.score += 100;
-            Invoke("DestroySelf", 1f);
+            Destroy(gameObject, 1f);
         }
-    }
-
-    void DestroySelf()
-    {
-        Destroy(gameObject);
     }
 }

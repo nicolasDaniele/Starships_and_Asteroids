@@ -8,11 +8,13 @@ public class AsteroidPieceController : MonoBehaviour
     public float yLimit = 6f;
     public float xLimit = 9.5f;
     public float force = 300f;
+    public AudioClip[] explodeClips = new AudioClip[2];
 
     Rigidbody2D rb2d;
     SpriteRenderer sprt;
     BoxCollider2D boxCol;
     ParticleSystem explosion;
+    AudioSource explodeAudio;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +23,7 @@ public class AsteroidPieceController : MonoBehaviour
         sprt = GetComponent<SpriteRenderer>();
         explosion = GetComponentInChildren<ParticleSystem>();
         boxCol = GetComponent<BoxCollider2D>();
+        explodeAudio = GetComponent<AudioSource>();
         float randForceX = Random.Range(-force, force);
         float randForceY = Random.Range(-force, force);
         float randTorque = Random.Range(-torque, torque);
@@ -46,17 +49,17 @@ public class AsteroidPieceController : MonoBehaviour
         // When shot, they get destroyed
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            // Randomize sfx clip
+            int randClip = Random.Range(0, 2);
+            explodeAudio.clip = explodeClips[randClip];
+            explodeAudio.Play();
             GameController.score += 50;
             Destroy(collision.gameObject);
             sprt.enabled = false;
             boxCol.enabled = false;
             explosion.Play();
-            Invoke("SelfDestroy", 1f);
+            Destroy(gameObject, 1f);
         }
     }
 
-    void SelfDestroy()
-    {
-        Destroy(gameObject);
-    }
 }

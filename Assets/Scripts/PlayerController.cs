@@ -17,10 +17,12 @@ public class PlayerController : MonoBehaviour
     Animator camAnim;
     Rigidbody2D rb2d;
     SpriteRenderer sRend;
+    AudioSource source;
     public ParticleSystem explosionParticle;
     public GameController game;
     public GameObject boss;
     public GameObject bossCannon;
+    public AudioClip[] dieClips = new AudioClip[2];
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         sRend = GetComponent<SpriteRenderer>();
+        source = GetComponent<AudioSource>();
         cam = Camera.main;
         camAnim = cam.GetComponent<Animator>();
     }
@@ -98,11 +101,22 @@ public class PlayerController : MonoBehaviour
             bossCannon.GetComponent<BossCannonController>().StartRotationPatern();
             Destroy(collision.gameObject);
         }
+
+        if (collision.gameObject.CompareTag("AsteroidsSpawner"))
+        {
+            game.InvokeRepeating("InstantiateAsteroid", 0.5f, game.asteroidSpawnTime);
+            game.canvasTutorial.enabled = false;
+            Destroy(collision.gameObject);
+        }
     }
 
     void Die()
     {
         camAnim.SetTrigger("Shake");
+        // Randomize sfx clip
+        int randClip = Random.Range(0, 2);
+        source.clip = dieClips[randClip];
+        source.Play();
         GetComponent<BoxCollider2D>().enabled = false;
         anim.SetTrigger("Die");
         float randXForce = Random.Range(-4, 0);
@@ -117,11 +131,6 @@ public class PlayerController : MonoBehaviour
     {
         sRend.enabled = false;
         explosionParticle.Play();
-        Invoke("DestroyShip", 1f);
-    }
-
-    void DestroyShip()
-    {
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 }

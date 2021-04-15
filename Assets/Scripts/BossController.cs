@@ -6,11 +6,12 @@ public class BossController : MonoBehaviour
 {
     public float speed = 3f;
     public int life = 20;
-    public ParticleSystem partSys1;
-    public ParticleSystem partSys2;
     public GameController game;
     public GameObject player;
+    public ParticleSystem[] partSystems = new ParticleSystem[3];
+
     SpriteRenderer sRend;
+    AudioSource source;
     Vector3 minValues;
     Vector3 maxValues;
     Camera cam;
@@ -23,12 +24,13 @@ public class BossController : MonoBehaviour
     {
         cam = Camera.main;
         sRend = GetComponent<SpriteRenderer>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (life <= 0)
+        if (life <= 0 && game.state != GameController.GameStates.WIN)
         {
             Die();
         }
@@ -46,19 +48,19 @@ public class BossController : MonoBehaviour
 
     private void Die()
     {
+        foreach (ParticleSystem ps in partSystems)
+        {
+            ps.Play();
+        }
+
+        game.state = GameController.GameStates.WIN;
         GameController.score += 1000;
+        source.Play();
         sRend.enabled = false;
         Destroy(GameObject.Find("Boss1Cannon"));
-        partSys1.Play();
-        partSys2.Play();
-        Invoke("DestroyBoss", 3f);
-        game.state = GameController.GameStates.WIN;
+        Destroy(gameObject, 6f);
     }
 
-    private void DestroyBoss()
-    {
-        Destroy(gameObject);
-    }
 
     public void StartMovePatern()
     {
