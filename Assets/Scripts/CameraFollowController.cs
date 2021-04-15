@@ -16,8 +16,8 @@ public class CameraFollowController : MonoBehaviour
             Vector3 newPos = new Vector3(transform.position.x, 
                                         ship.transform.position.y,
                                         transform.position.z);
-
-             transform.position = Vector3.Lerp(transform.position, newPos, moveTime);
+            newPos.y = Mathf.Clamp(newPos.y, -5f, -0.5f);
+            transform.position = Vector3.Lerp(transform.position, newPos, moveTime);
         }
     }
 }

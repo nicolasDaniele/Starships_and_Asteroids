@@ -9,9 +9,12 @@ public class BossController : MonoBehaviour
     public GameController game;
     public GameObject player;
     public ParticleSystem[] partSystems = new ParticleSystem[3];
+    public SpriteRenderer cannonSRend;
+    public AudioClip[] clipsArr = new AudioClip[4];
 
     SpriteRenderer sRend;
     AudioSource source;
+    Animator camAnim;
     Vector3 minValues;
     Vector3 maxValues;
     Camera cam;
@@ -23,6 +26,7 @@ public class BossController : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        camAnim = cam.GetComponent<Animator>();
         sRend = GetComponent<SpriteRenderer>();
         source = GetComponent<AudioSource>();
     }
@@ -41,8 +45,22 @@ public class BossController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Destroy(collision.gameObject);
-            GetComponent<SpriteRenderer>();
             life--;
+            // Randomize sfx clip
+            int randClip = Random.Range(1, 4);
+            source.clip = clipsArr[randClip];
+            source.Play();
+            // Disappear for a little while (visual feedback)
+            if (sRend != null && cannonSRend != null)
+            {
+                sRend.enabled = false;
+                cannonSRend.enabled = false;
+                if (life > 0)
+                {
+                    Invoke("EnableSpriteRend", 0.2f);
+                }
+                
+            }
         }
     }
 
@@ -53,12 +71,20 @@ public class BossController : MonoBehaviour
             ps.Play();
         }
 
+        StopCoroutine("StartMovePatern");
         game.state = GameController.GameStates.WIN;
         GameController.score += 1000;
+        source.clip = clipsArr[0];
         source.Play();
-        sRend.enabled = false;
+        //sRend.enabled = false;
         Destroy(GameObject.Find("Boss1Cannon"));
         Destroy(gameObject, 6f);
+
+        if (this != null)
+        {
+            // ScreenShake
+            camAnim.SetTrigger("FinalShake");
+        }
     }
 
 
@@ -71,6 +97,12 @@ public class BossController : MonoBehaviour
         maxY = cam.ViewportToWorldPoint(maxValues).y;
 
         StartCoroutine("MovePatern");
+    }
+
+    void EnableSpriteRend()
+    {
+        sRend.enabled = true;
+        cannonSRend.enabled = true;
     }
 
     // Move up and down

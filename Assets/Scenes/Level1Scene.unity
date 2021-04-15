@@ -2240,7 +2240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353855532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.94, y: -0.58, z: 0}
+  m_LocalPosition: {x: -0.87, y: 0.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 569578326}
@@ -2317,7 +2317,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353855532}
   serializedVersion: 6
-  lengthInSec: 2
+  lengthInSec: 5
   simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
@@ -2332,7 +2332,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 2
+    scalar: 5
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -2936,7 +2936,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -8332,13 +8332,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  life: 3
+  life: 20
   game: {fileID: 588156084}
   player: {fileID: 1946859599}
   partSystems:
   - {fileID: 1571120153}
   - {fileID: 353855535}
   - {fileID: 1431011558}
+  cannonSRend: {fileID: 2095549185}
+  clipsArr:
+  - {fileID: 8300000, guid: c5ae3b7c406e59841a088e547be8cacf, type: 3}
+  - {fileID: 8300000, guid: a1abb1f877d176948870a14153b8ecc5, type: 3}
+  - {fileID: 8300000, guid: a2d7022522686ce43abe5a435ce8a06c, type: 3}
+  - {fileID: 8300000, guid: fcd91ff65f445d34db2cdf2c0a37431f, type: 3}
 --- !u!82 &569578329
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8349,7 +8355,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c5ae3b7c406e59841a088e547be8cacf, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -8611,7 +8617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589016297}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -120, y: -1.8, z: 0}
+  m_LocalPosition: {x: 50, y: -1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1822207307}
@@ -12236,7 +12242,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431011555}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.99, y: 0.65, z: 0}
+  m_LocalPosition: {x: 0.74, y: -0.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 569578326}
@@ -12313,7 +12319,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431011555}
   serializedVersion: 6
-  lengthInSec: 2
+  lengthInSec: 5
   simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
@@ -12328,7 +12334,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 4
+    scalar: 10
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -12932,7 +12938,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -17961,7 +17967,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1571120150}
   serializedVersion: 6
-  lengthInSec: 2
+  lengthInSec: 5
   simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
@@ -18580,7 +18586,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
