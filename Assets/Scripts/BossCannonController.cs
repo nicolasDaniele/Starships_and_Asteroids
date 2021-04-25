@@ -23,6 +23,17 @@ public class BossCannonController : MonoBehaviour
         anim.enabled = false;
     }
 
+    private void Update()
+    {
+        if (game.state != GameController.GameStates.BOSSFIGHT)
+        {
+            // Cancel animations and stuff in END mode
+            CancelInvoke();
+            StopCoroutine("RotateCannon");
+            anim.enabled = false;
+        }
+    }
+
     void ShootAnimation()
     {
         if (game.state == GameController.GameStates.BOSSFIGHT)
@@ -52,7 +63,7 @@ public class BossCannonController : MonoBehaviour
     // Cannon Rotation
     IEnumerator RotateCannon()
     {
-        while (game.state == GameController.GameStates.BOSSFIGHT)
+        while (true)
         {
             while (transform.localEulerAngles.z >= minRot)
             {

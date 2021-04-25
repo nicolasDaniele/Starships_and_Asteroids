@@ -52,7 +52,7 @@ public class AsteroidController : MonoBehaviour
             }
 
             GameController.score += 100;
-            Destroy(gameObject, 1f);
+            Destroy(gameObject);
             Destroy(collision.gameObject);
         }
     }

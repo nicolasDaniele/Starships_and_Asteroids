@@ -129,8 +129,8 @@ public class PlayerController : MonoBehaviour
 
     void Explode()
     {
-        sRend.enabled = false;
         explosionParticle.Play();
+        sRend.enabled = false;
         Destroy(gameObject, 1f);
     }
 }
