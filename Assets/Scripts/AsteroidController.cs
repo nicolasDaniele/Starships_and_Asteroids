@@ -39,6 +39,8 @@ public class AsteroidController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
+
             // Randomize sfx clip
             int randClip = Random.Range(0, 2);
             destroyAudio.clip = destroyClips[randClip];
@@ -52,7 +54,7 @@ public class AsteroidController : MonoBehaviour
             }
 
             GameController.score += 100;
-            Destroy(gameObject);
+            Destroy(gameObject, 2f);
             Destroy(collision.gameObject);
         }
     }
