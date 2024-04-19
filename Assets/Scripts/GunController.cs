@@ -1,16 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class GunController : MonoBehaviour
 {
-    public GameObject bullet;
-    public GameController game;
-    public float shootTime = 0.3f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float shootTime = 0.3f;
 
     bool canShoot;
     AudioSource shotAudio;
     public AudioClip[] shotClips = new AudioClip[3];
+
+    private void OnEnable()
+    {
+        ShipBehaviour.OnShoot += Shoot;
+    }
 
     private void Start()
     {
@@ -18,26 +21,29 @@ public class GunController : MonoBehaviour
         canShoot = true;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Shoot()
     {
-        // Spawns bullet
-        if (Input.GetButtonDown("Fire1") && canShoot &&
-            (game.state == GameController.GameStates.PLAY || 
-            game.state == GameController.GameStates.BOSSFIGHT))
+        if(!canShoot)
         {
-            // Randomize sfx clip
-            int randClip = Random.Range(0, 3);
-            shotAudio.clip = shotClips[randClip];
-            shotAudio.Play();
-            Instantiate(bullet, transform.position, Quaternion.identity);
-            canShoot = false;
-            Invoke("EnableShoot", shootTime);
+            return;
         }
+
+        // HANDLE SFX PLAYING
+
+        PoolsManager.Instance.Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        
+        // CHECK COOLDOWN
+        canShoot = false;
+        //Invoke("EnableShoot", shootTime);
+        StartCoroutine(nameof(EnableShoot));
     }
 
-    void EnableShoot()
+    private IEnumerator EnableShoot()
     {
+        new WaitForSeconds(shootTime);
         canShoot = true;
+
+        yield return null;
     }
 }

@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    float vert;
-    float horiz;
     float minX;
     float maxX;
     float minY;
@@ -35,22 +31,8 @@ public class PlayerController : MonoBehaviour
         camAnim = cam.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (game.state == GameController.GameStates.PLAY ||
-            game.state == GameController.GameStates.BOSSFIGHT)
-        {
-            // Vertical movement
-            vert = Input.GetAxis("Vertical");
-            transform.position += new Vector3(0, vert * speed * Time.deltaTime, 0);
-
-            // Horizontal movement
-            horiz = Input.GetAxis("Horizontal");
-            transform.position += new Vector3(horiz * speed * Time.deltaTime, 0, 0);
-        }
-
-
         // Movement limits (from viewport)
         Vector3 minValues = cam.WorldToViewportPoint(cam.transform.position) - new Vector3(0.4f, 0.4f, 0);
         Vector3 maxValues = cam.WorldToViewportPoint(cam.transform.position) + new Vector3(0, 0.4f, 0);
@@ -59,9 +41,7 @@ public class PlayerController : MonoBehaviour
         minY = cam.ViewportToWorldPoint(minValues).y;
         maxY = cam.ViewportToWorldPoint(maxValues).y;
 
-        // Horizontal movement clamp
         float clampedXPos = Mathf.Clamp(transform.position.x, minX, maxX);
-        // Vertical movement clamp
         float clampedYPos = Mathf.Clamp(transform.position.y, minY, maxY);
 
         transform.position = new Vector3(clampedXPos, clampedYPos, transform.position.z);
@@ -75,8 +55,6 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -104,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("AsteroidsSpawner"))
         {
-            game.InvokeRepeating("InstantiateAsteroid", 0.5f, game.asteroidSpawnTime);
+            // TRIGGER EVENT TO START SPAWNING ASTEROIDS?
             game.canvasTutorial.enabled = false;
             Destroy(collision.gameObject);
         }

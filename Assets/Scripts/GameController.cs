@@ -1,17 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-
     public GameObject enemy;
-    public GameObject asteroid;
-    float asteroidPosY;
-    float asteroidPosX;
-    bool paused;
-    public float asteroidSpawnTime = 1.5f;
     public static int score;
     public static bool moveCamera;
     public Text scoreText;
@@ -25,10 +17,8 @@ public class GameController : MonoBehaviour
     public enum GameStates { PLAY, END, BOSSFIGHT, WIN };
     public GameStates state;
 
-    // Start is called before the first frame update
     void Start()
     {
-        paused = false; 
         canvasEnd.enabled = false;
         canvasWin.enabled = false;
         moveCamera = false;
@@ -37,9 +27,6 @@ public class GameController : MonoBehaviour
         canvasPause.enabled = false;
         state = GameStates.PLAY;
         score = 0;
-        asteroidPosX = Random.Range(0f, 8f); // X position for asteroid spawning
-        asteroidPosY = 6f; // Y position for asteroid spawning
-       // InvokeRepeating("InstantiateAsteroid", 0.5f, asteroidSpawnTime);
     }
 
     private void Update()
@@ -60,34 +47,11 @@ public class GameController : MonoBehaviour
             canvasWin.enabled = true;
             finalScoreText.text = ("SCORE: " + score);
         }
-
-        // Pause
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            if (!paused)
-            {
-                Time.timeScale = 0;
-                canvasPause.enabled = true;
-                paused = true;
-            }
-            else
-            {
-                Time.timeScale = 1;
-                canvasPause.enabled = false;
-                paused = false;
-            }
-            
-        }
     }
+    
     void LateUpdate()
     {
         scoreText.text = "SCORE: " + score;
-    }
-
-
-    void InstantiateAsteroid()
-    {
-        Instantiate(asteroid, new Vector3(asteroidPosX, asteroidPosY, 0), Quaternion.identity);
     }
 
     public void ReloadScene()
